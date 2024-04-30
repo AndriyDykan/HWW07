@@ -28,7 +28,7 @@ if __name__ == '__main__':
         session.add(tr)
 
     for _ in range(40):
-        mr = Mark(mark_score=random.randint(1, 12), date=datetime.datetime.now(), teacher_id=random.randint(1, 11),
+        mr = Mark(mark_score=random.randint(1, 12), date=datetime.datetime.now(),
                   subject_id=random.randint(1, 8),student_id= random.randint(1,39))
         session.add(mr)
 

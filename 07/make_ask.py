@@ -39,22 +39,30 @@ group_id = 1
 subject_id = 1
 grades_in_group_and_subject = session.query(Mark).join(Student).filter(Student.group_id == group_id, Mark.subject_id == subject_id).all()
 print(grades_in_group_and_subject)
-#Знайдіть середній бал, який ставить певний викладач зі своїх предметів
+# Знайдіть середній бал, який ставить певний викладач зі своїх предметів
 teacher_id = 1
-average_score_given_by_teacher = session.query(func.avg(Mark.mark_score)).filter(Mark.teacher_id == teacher_id).scalar()
+average_score_given_by_teacher = session.query(func.avg(Mark.mark_score))\
+    .join(Teacher, Mark.subject_id == Teacher.subject_id)\
+    .filter(Teacher.teacher_id == teacher_id)\
+    .scalar()
 print(average_score_given_by_teacher)
-#Знайдіть список курсів, які відвідує певний студент
-student_id = 18
-courses_attended_by_student = session.query(Subject.subject_name).\
-    select_from(Subject).\
-    join(Mark, Mark.subject_id == Subject.subject_id).\
-    filter(Mark.student_id == student_id).all()
+
+# Знайдіть список курсів, які відвідує певний студент
+student_id = 16
+courses_attended_by_student = session.query(Subject.subject_name)\
+    .join(Mark, Mark.subject_id == Subject.subject_id)\
+    .filter(Mark.student_id == student_id)\
+    .distinct()\
+    .all()
 print(courses_attended_by_student)
-#Список курсів, які певному студенту читає певний викладач
-student_id = 18
-teacher_id = 3
-courses_taught_to_student_by_teacher = session.query(Subject.subject_name).\
-    select_from(Subject).\
-    join(Mark, Mark.subject_id == Subject.subject_id).\
-    filter(Mark.student_id == student_id, Mark.teacher_id == teacher_id).scalar()
+
+# Список курсів, які певному студенту читає певний викладач
+teacher_id = 4
+student_id = 16
+courses_taught_to_student_by_teacher = session.query(Subject.subject_name)\
+    .join(Mark, Mark.subject_id == Subject.subject_id)\
+    .join(Teacher, Mark.subject_id == Teacher.subject_id)\
+    .filter(Mark.student_id == student_id, Teacher.teacher_id == teacher_id)\
+    .distinct()\
+    .all()
 print(courses_taught_to_student_by_teacher)

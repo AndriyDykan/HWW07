@@ -49,7 +49,6 @@ class Mark(Base):
     mark_id = Column(Integer, primary_key=True)
     mark_score = Column(Integer, nullable=False)
     date = Column(DateTime())
-    teacher_id = Column(Integer, ForeignKey(Teacher.teacher_id, ondelete="CASCADE"))
     subject_id = Column(Integer, ForeignKey(Teacher.subject_id, ondelete="CASCADE"))
     student_id = Column(Integer, ForeignKey(Student.student_id, ondelete="CASCADE"))
 
